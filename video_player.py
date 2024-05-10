@@ -9,7 +9,7 @@ from video_processing import VideoProcessor
 
 
 class VideoPlayer(QWidget):
-    def __init__(self, source):
+    def __init__(self):
         super().__init__()
 
         self.error = 0
@@ -25,7 +25,7 @@ class VideoPlayer(QWidget):
         self.video_label.setMinimumSize(1, 1)
         self.layout.addWidget(self.video_label)
 
-        self.video_processor = VideoProcessor(source)
+        self.video_processor = None
         #self.frame_interval = 1000 / self.video_processor.frame_rate
         self.frame_interval = 1000 / 60
 
@@ -73,11 +73,14 @@ class VideoPlayer(QWidget):
             self.current_time += 1
         self.update()
 
-    def enable_camera(self):
+    def enable_camera(self, source):
+        self.video_processor = VideoProcessor(source)
         self.cameraEnabled = True
         self.timer.start(1)
 
     def disable_camera(self):
+        self.video_processor.release()
+        self.video_processor = None
         self.cameraEnabled = False
         self.lastFramePixmap = None
         self.timer.stop()

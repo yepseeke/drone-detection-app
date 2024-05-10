@@ -1,14 +1,17 @@
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog
+from PyQt5.QtCore import pyqtSlot, QObject
 from imageMonitorWidget import *
 from video_player import *
+from choosingCameraDialog import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi('mainWindow.ui', self)
         self.setWindowTitle("Детектор дронов")
+        self.setStyleSheet("background-color: rgb(204, 229, 255);")
 
         self.imageLayout1 = self.findChild(QHBoxLayout, "horizontalLayout_4")
         self.imageMonitorWidget = ImageMonitorWidget()
@@ -21,7 +24,7 @@ class MainWindow(QMainWindow):
         self.clearImageMonitorButton.clicked.connect(self.clearImageMonitor)
 
         self.cameraLayout1 = self.findChild(QHBoxLayout, "horizontalLayout_2")
-        self.videoPlayerWidget = VideoPlayer(0)
+        self.videoPlayerWidget = VideoPlayer()
         self.cameraLayout1.addWidget(self.videoPlayerWidget, 13)
 
         self.chooseCameraButton = self.findChild(QPushButton, "chooseCameraButton")
@@ -32,6 +35,8 @@ class MainWindow(QMainWindow):
 
         self.makePhotoButton = self.findChild(QPushButton, "makePhotoButton")
         self.makePhotoButton.clicked.connect(self.makePhoto)
+
+        self.choosingCameraDialog = None
 
     def uploadImage(self):
         filepath = QFileDialog.getOpenFileName(self, "Укажите путь к картинке", "/home",
@@ -46,7 +51,17 @@ class MainWindow(QMainWindow):
         self.imageMonitorWidget.clear()
 
     def chooseCamera(self):
-        self.videoPlayerWidget.enable_camera()
+        self.choosingCameraDialog = ChoosingCameraDialog()
+        self.choosingCameraDialog.chooseSignal.connect(self.turnOnCamera)
+        self.choosingCameraDialog.show()
+        self.choosingCameraDialog.exec_()
+
+
+    def turnOnCamera(self):
+        cameraId = self.choosingCameraDialog.cameraId
+        self.choosingCameraDialog.close()
+        self.choosingCameraDialog = None
+        self.videoPlayerWidget.enable_camera(cameraId)
 
     def disconnectCamera(self):
         self.videoPlayerWidget.disable_camera()
