@@ -10,19 +10,19 @@ class VideoProcessor:
         self.video_capture = cv2.VideoCapture(source)
         self.net_model = None
 
-    def get_frame(self, color_model='BGR'):
+    def get_frame(self, color_model='RGB'):
         success, frame = self.video_capture.read()
         if success:
-            if color_model == 'RGB':
-                return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            return frame
+            if color_model == 'BGR':
+                return frame
+            return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         return None
 
     # function returns annotated frame
     def find_objects(self, frame):
         pass
 
-    def get_annotated_frame(self, color_model='BGR'):
+    def get_annotated_frame(self, color_model='RGB'):
         frame = self.get_frame(color_model)
         if frame:
             annotated_frame = self.find_objects(frame)
