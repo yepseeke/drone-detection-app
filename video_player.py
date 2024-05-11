@@ -20,7 +20,7 @@ class VideoPlayer(QWidget):
         self.cameraEnabled = False
         self.lastFramePixmap = None
 
-        self.setStyleSheet("background-color: black;")
+        self.setStyleSheet("background-color: rgb(0, 0, 0);")
 
         self.video_label = QLabel()
         self.video_label.setMinimumSize(1, 1)

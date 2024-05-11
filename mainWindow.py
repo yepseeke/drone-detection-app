@@ -1,6 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame
 from PyQt5.QtCore import pyqtSlot, QObject
 from imageMonitorWidget import *
 from video_player import *
@@ -10,8 +10,14 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi('mainWindow.ui', self)
-        self.setWindowTitle("Детектор дронов")
-        self.setStyleSheet("background-color: rgb(204, 229, 255);")
+        self.setWindowTitle("DroneDetectorApp")
+        self.setStyleSheet("background-color: rgb(18, 18, 18);")
+
+        self.titleFrame = self.findChild(QFrame, "titleFrame")
+        self.titleFrame.setStyleSheet("background-color: rgb(15, 15, 15);")
+
+        self.infoButton = self.findChild(QPushButton, "infoButton")
+        self.infoButton.clicked.connect(self.showInfo)
 
         self.imageLayout1 = self.findChild(QHBoxLayout, "horizontalLayout_4")
         self.imageMonitorWidget = ImageMonitorWidget()
@@ -37,6 +43,9 @@ class MainWindow(QMainWindow):
         self.makePhotoButton.clicked.connect(self.makePhoto)
 
         self.choosingCameraDialog = None
+
+    def showInfo(self):
+        pass
 
     def uploadImage(self):
         filepath = QFileDialog.getOpenFileName(self, "Укажите путь к картинке", "/home",
@@ -68,5 +77,5 @@ class MainWindow(QMainWindow):
 
     def makePhoto(self):
         lastFramePixmap = self.videoPlayerWidget.lastFramePixmap
-        filepath, _ = QFileDialog.getSaveFileName(self, "Укажите путь и название снимка", "", "Изображение (*.jpg)", options=QFileDialog.DontUseNativeDialog)
+        filepath, _ = QFileDialog.getSaveFileName(None, "Укажите путь и название снимка", "", "Изображение (*.jpg)", options=QFileDialog.DontUseNativeDialog)
         lastFramePixmap.save(filepath + ".jpg")

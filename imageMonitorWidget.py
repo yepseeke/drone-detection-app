@@ -8,7 +8,7 @@ class ImageMonitorWidget(QWidget):
         self.label = self.findChild(QLabel, "label")
         self.label.setMinimumSize(1, 1)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.setStyleSheet("background-color: black;")
+        self.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.imageLoaded = False
         self.image = None
 
