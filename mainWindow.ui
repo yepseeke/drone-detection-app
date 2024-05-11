@@ -19,7 +19,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_6">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,23">
+     <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,27">
       <item>
        <widget class="QFrame" name="titleFrame">
         <property name="frameShape">
