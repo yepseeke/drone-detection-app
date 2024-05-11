@@ -1,8 +1,4 @@
 import cv2
-import numpy as np
-import torch
-
-from ultralytics import YOLO
 
 
 def to_rgb(frame):
@@ -12,29 +8,21 @@ def to_rgb(frame):
 class VideoProcessor:
     def __init__(self, source):
         self.video_capture = cv2.VideoCapture(source)
-        self.model = YOLO(r'models\light.pt', task='detect')
+        self.net_model = None
         self.current_frame_index = 0
-
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        if torch.cuda.is_available():
-            torch.cuda.set_device(0)
-
-        self.model.to(device=device)
 
     def get_frame(self, color_model='RGB'):
         success, frame = self.video_capture.read()
         if success:
             self.current_frame_index += 1
             if color_model == 'BGR':
-                return success, np.array(frame)
+                return success, frame
             return success, cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         return success, frame
 
     # function returns annotated frame
     def find_objects(self, frame):
-        result = self.model.track(frame, persist=False)
-        annotated_frame = result[0].plot()
-        return annotated_frame
+        pass
 
     def get_annotated_frame(self, color_model='RGB'):
         success, frame = self.get_frame(color_model)
