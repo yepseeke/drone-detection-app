@@ -1,26 +1,33 @@
 import time
-from PyQt5.QtCore import QTimer, QElapsedTimer
+import sys
+
+from PyQt5.QtCore import QTimer, QElapsedTimer, Qt
 from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtGui import QPixmap, QImage
+
 from video_processing import VideoProcessor
 
+background_color = (0, 0, 0)
 
-class VideoPlayer(QMainWindow):
-    def __init__(self, source):
+
+class VideoPlayer(QWidget):
+    def __init__(self):
         super().__init__()
 
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout()
-        self.central_widget.setLayout(self.layout)
+        self.setLayout(self.layout)
+
+        self.setStyleSheet(f'background-color: rgb{background_color};')
 
         self.video_label = QLabel()
+        self.video_label.setMinimumSize(1, 1)
+        self.video_label.setAlignment(Qt.AlignCenter)
         self.layout.addWidget(self.video_label)
 
-        self.video_processor = VideoProcessor(source)
-        self.frame_rate = self.video_processor.frame_rate
-        self.frame_interval = 1000 / self.frame_rate
+        self.video_processor = None
+        self.last_frame_pixmap = None
+        self.camera_enabled = False
+        self.frame_interval = 0
 
         self.elapsed_timer = QElapsedTimer()
         self.elapsed_timer.start()
@@ -31,6 +38,9 @@ class VideoPlayer(QMainWindow):
         self.timer.start()
 
     def update_frame(self):
+        if not self.camera_enabled:
+            return
+
         current_time = self.elapsed_timer.elapsed()
 
         if current_time >= self.frame_interval:
@@ -41,7 +51,10 @@ class VideoPlayer(QMainWindow):
                 bytes_per_line = channel * width
 
                 q_image = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
-                pixmap = QPixmap.fromImage(q_image)
+                self.last_frame_pixmap = QPixmap.fromImage(q_image)
+                scaled_frame = self.last_frame_pixmap.scaled(self.video_label.width(), self.video_label.height(),
+                                                             Qt.KeepAspectRatio)
+                pixmap = QPixmap.fromImage(scaled_frame)
 
                 self.video_label.setPixmap(pixmap)
 
@@ -49,3 +62,26 @@ class VideoPlayer(QMainWindow):
             else:
                 self.timer.stop()
                 self.video_processor.release()
+
+    def resize_event(self, event):
+        if self.camera_enabled and self.last_frame_pixmap is not None:
+            scaled_frame = self.lastFramePixmap.scaled(self.video_label.width(), self.video_label.height(),
+                                                       Qt.KeepAspectRatio)
+            self.video_label.setPixmap(scaled_frame)
+        QWidget.resizeEvent(self, event)
+
+    def enable_camera(self, source):
+        self.camera_enabled = True
+
+        self.video_processor = VideoProcessor(source)
+        self.frame_interval = 1000 / self.video_processor.frame_rate
+
+    def disable_camera(self):
+        self.video_processor.release()
+
+        self.camera_enabled = False
+        self.video_processor = None
+        self.last_frame_pixmap = None
+
+        self.timer.stop()
+        self.video_label.clear()

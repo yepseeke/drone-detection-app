@@ -45,7 +45,7 @@ class VideoProcessor:
 
     def set_frame_index(self, frame_index: int):
         if frame_index < 0 or frame_index >= self.total_frames:
-            raise Exception("Error: Frame index is out of range")
+            raise Exception("Error: Frame index is out of range.")
         self.video_capture.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
         self.current_frame_index = frame_index
 
