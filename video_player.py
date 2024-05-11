@@ -4,6 +4,7 @@ import time
 from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QTimer, Qt, QElapsedTimer
+from PyQt5 import QtCore
 
 from video_processing import VideoProcessor
 
@@ -23,6 +24,7 @@ class VideoPlayer(QWidget):
 
         self.video_label = QLabel()
         self.video_label.setMinimumSize(1, 1)
+        self.video_label.setAlignment(QtCore.Qt.AlignCenter)
         self.layout.addWidget(self.video_label)
 
         self.video_processor = None
