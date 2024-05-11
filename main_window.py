@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QImage, QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame
 from PyQt5.QtCore import pyqtSlot, QObject
 
@@ -8,6 +8,7 @@ from video_player import VideoPlayer
 from choosing_camera_dialog import ChoosingCameraDialog
 
 main_window_path = r'ui/main_window.ui'
+info_icon_path = r'images/infoIcon.svg'
 
 background_color = (18, 18, 18)
 title_frame_color = (15, 15, 15)
@@ -51,6 +52,9 @@ class MainWindow(QMainWindow):
         self.make_photo_button = self.findChild(QPushButton, "makePhotoButton")
         self.make_photo_button.clicked.connect(self.make_photo)
 
+        self.info_button = self.findChild(QPushButton, "infoButton")
+        self.info_button.setIcon(QIcon(info_icon_path))
+
         self.choosing_camera_dialog = None
 
     def show_info(self):
@@ -72,7 +76,7 @@ class MainWindow(QMainWindow):
 
     def choose_camera(self):
         self.choosing_camera_dialog = ChoosingCameraDialog()
-        self.choosing_camera_dialog.chooseSignal.connect(self.turn_on_camera)
+        self.choosing_camera_dialog.choose_signal.connect(self.turn_on_camera)
         self.choosing_camera_dialog.show()
         self.choosing_camera_dialog.exec_()
 

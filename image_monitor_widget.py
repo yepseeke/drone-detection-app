@@ -26,7 +26,7 @@ class ImageMonitorWidget(QWidget):
         scaled_image = self.image.scaled(self.label.width(), self.label.height(), Qt.KeepAspectRatio)
         self.label.setPixmap(scaled_image)
 
-    def resize_event(self, event):
+    def resizeEvent(self, event):
         if not self.image_loaded:
             return
 
