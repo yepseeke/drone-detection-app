@@ -26,8 +26,6 @@ class VideoPlayer(QWidget):
         self.layout.addWidget(self.video_label)
 
         self.video_processor = None
-        #self.frame_interval = 1000 / self.video_processor.frame_rate
-        self.frame_interval = 1000 / 60
 
         self.elapsed_timer = QElapsedTimer()
         self.elapsed_timer.start()
@@ -75,6 +73,7 @@ class VideoPlayer(QWidget):
 
     def enable_camera(self, source):
         self.video_processor = VideoProcessor(source)
+        self.frame_interval = 1000 / self.video_processor.frame_rate
         self.cameraEnabled = True
         self.timer.start(1)
 
