@@ -54,16 +54,15 @@ class VideoPlayer(QWidget):
                 self.last_frame_pixmap = QPixmap.fromImage(q_image)
                 scaled_frame = self.last_frame_pixmap.scaled(self.video_label.width(), self.video_label.height(),
                                                              Qt.KeepAspectRatio)
-                pixmap = QPixmap.fromImage(scaled_frame)
 
-                self.video_label.setPixmap(pixmap)
+                self.video_label.setPixmap(scaled_frame)
 
                 self.elapsed_timer.restart()
             else:
                 self.timer.stop()
                 self.video_processor.release()
 
-    def resize_event(self, event):
+    def resizeEvent(self, event):
         if self.camera_enabled and self.last_frame_pixmap is not None:
             scaled_frame = self.lastFramePixmap.scaled(self.video_label.width(), self.video_label.height(),
                                                        Qt.KeepAspectRatio)
@@ -71,17 +70,16 @@ class VideoPlayer(QWidget):
         QWidget.resizeEvent(self, event)
 
     def enable_camera(self, source):
-        self.camera_enabled = True
-
         self.video_processor = VideoProcessor(source)
         self.frame_interval = 1000 / self.video_processor.frame_rate
+        self.camera_enabled = True
 
     def disable_camera(self):
-        self.video_processor.release()
-
         self.camera_enabled = False
-        self.video_processor = None
         self.last_frame_pixmap = None
 
-        self.timer.stop()
+        self.video_processor.release()
+        self.video_processor = None
+
+        #self.timer.stop()
         self.video_label.clear()

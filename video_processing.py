@@ -12,7 +12,7 @@ def to_rgb(frame):
 class VideoProcessor:
     def __init__(self, source):
         self.video_capture = cv2.VideoCapture(source)
-        self.model = YOLO(r'models\light.pt', task='detect')
+        self.model = YOLO(r'models/light.pt', task='detect')
         self.current_frame_index = 0
 
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
