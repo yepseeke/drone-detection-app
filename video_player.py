@@ -39,13 +39,13 @@ class VideoPlayer(QWidget):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start()
 
-    def update_frame(self):
+    def update_frame(self, force_update=False):
         if not self.camera_enabled:
             return
 
         current_time = self.elapsed_timer.elapsed()
 
-        if current_time >= self.frame_interval:
+        if current_time >= self.frame_interval or force_update:
             success, frame = self.video_processor.get_annotated_frame()
 
             if success:
@@ -87,6 +87,12 @@ class VideoPlayer(QWidget):
 
         #self.timer.stop()
         self.video_label.clear()
+
+    def stop_camera(self):
+        self.camera_enabled = False
+
+    def resume_camera(self):
+        self.camera_enabled = True
 
     def total_frames(self):
         return self.video_processor.total_frames

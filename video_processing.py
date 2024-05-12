@@ -17,7 +17,6 @@ class VideoProcessor:
 
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         if torch.cuda.is_available():
-            print("lol")
             torch.cuda.set_device(0)
 
         self.model.to(device=device)
