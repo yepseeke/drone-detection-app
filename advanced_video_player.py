@@ -26,6 +26,7 @@ class AdvancedVideoPlayer(QWidget):
         self.slider.sliderReleased.connect(self.change_slider_state_to_false)
         self.slider.valueChanged.connect(self.move_to_frame)
         self.video_player.frame_changed_signal.connect(self.change_slider_position)
+        self.slider.setStyleSheet("QSlider::handle:horizontal { background-color: rgb(67, 252, 252); border: 1px solid; height: 40px; width: 40px; margin: -15px 0px; }")
 
         self.pause_resume_button = QPushButton()
         self.pause_resume_button_state = False
