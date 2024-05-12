@@ -58,9 +58,10 @@ class VideoPlayer(QWidget):
                 self.video_label.setPixmap(scaled_frame)
 
                 self.elapsed_timer.restart()
-            else:
-                self.timer.stop()
-                self.video_processor.release()
+            #else:
+                #self.timer.stop()
+                #self.video_processor.release()
+
 
     def resizeEvent(self, event):
         if self.camera_enabled and self.last_frame_pixmap is not None:
