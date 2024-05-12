@@ -19,8 +19,8 @@ class AdvancedVideoPlayer(QWidget):
         self.slider.setMaximum(0)
         self.slider_is_pressed = False
         self.slider.sliderPressed.connect(self.change_slider_state_to_true)
-        self.slider.sliderMoved.connect(self.move_to_frame)
         self.slider.sliderReleased.connect(self.change_slider_state_to_false)
+        self.slider.valueChanged.connect(self.move_to_frame)
         self.video_player.frame_changed_signal.connect(self.change_slider_position)
         self.layout.addWidget(self.slider, 1)
 

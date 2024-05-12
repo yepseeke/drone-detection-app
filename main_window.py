@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         pass
 
     def upload_image(self):
-        filepath = QFileDialog.getOpenFileName(self, "Provide path to the image", "/home",
+        filepath = QFileDialog.getOpenFileName(self, "Provide path to the image", r"/",
                                                "All files (*);; Jpg Files (*.jpg) ;; PNG Files (*.png);")[0]
 
         if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "jpg" and filepath[len(filepath) - 3: len(
@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
         self.image_monitor_widget.set_image(image)
 
     def upload_video(self):
-        filepath = QFileDialog.getOpenFileName(self, "Provide path to the video", "/home",
+        filepath = QFileDialog.getOpenFileName(self, "Provide path to the video", r"/",
                                                "All files (*);; MP4 Files (*.mp4)")[0]
 
         if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "mp4":
