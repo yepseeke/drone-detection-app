@@ -1,7 +1,7 @@
 import time
 import sys
 
-from PyQt5.QtCore import QTimer, QElapsedTimer, Qt
+from PyQt5.QtCore import QTimer, QElapsedTimer, Qt, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtGui import QPixmap, QImage
 
@@ -11,6 +11,8 @@ background_color = (0, 0, 0)
 
 
 class VideoPlayer(QWidget):
+    frame_changed_signal = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
 
@@ -47,6 +49,7 @@ class VideoPlayer(QWidget):
             success, frame = self.video_processor.get_annotated_frame()
 
             if success:
+                self.frame_changed_signal.emit(self.video_processor.current_frame_index)
                 height, width, channel = frame.shape
                 bytes_per_line = channel * width
 
@@ -84,3 +87,9 @@ class VideoPlayer(QWidget):
 
         #self.timer.stop()
         self.video_label.clear()
+
+    def total_frames(self):
+        return self.video_processor.total_frames
+
+    def move_to_frame(self, index):
+        self.video_processor.set_frame_index(index)
