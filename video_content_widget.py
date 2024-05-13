@@ -15,9 +15,11 @@ class VideoContentWidget(QWidget):
         self.main_widget = QWidget()
         self.main_widget.setLayout(QHBoxLayout())
         self.advanced_video_player = AdvancedVideoPlayer()
+        # place for fft widget
         self.additional_widget = QWidget()
         self.main_widget.layout().addWidget(self.advanced_video_player, 3)
         self.main_widget.layout().addWidget(self.additional_widget, 2)
+        self.main_widget.layout().setContentsMargins(0, 0, 0, 0)
         self.additional_widget.setVisible(False)
 
         self.buttons_layout = QHBoxLayout()

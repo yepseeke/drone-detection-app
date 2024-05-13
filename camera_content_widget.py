@@ -14,9 +14,19 @@ class CameraContentWidget(QWidget):
 
         self.setStyleSheet(f"background-color: rgb{background_color};")
 
-        self.main_layout = QVBoxLayout()
+        self.setLayout(QVBoxLayout())
+        self.layout().setContentsMargins(0, 0, 9, 9)
+
+        self.main_widget = QWidget()
+        self.main_widget.setLayout(QHBoxLayout())
+        self.main_widget.layout().setContentsMargins(0, 0, 0, 0)
         self.video_player_widget = VideoPlayer()
-        self.main_layout.addWidget(self.video_player_widget, 9)
+        self.main_widget.layout().addWidget(self.video_player_widget, 3)
+        #place for fft widget
+        self.additional_widget = QWidget()
+        self.main_widget.layout().addWidget(self.additional_widget, 2)
+        self.layout().addWidget(self.main_widget, 9)
+        self.additional_widget.setVisible(False)
 
         self.buttons_layout = QHBoxLayout()
 
@@ -40,14 +50,22 @@ class CameraContentWidget(QWidget):
         self.make_photo_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
         self.make_photo_button.clicked.connect(self.make_photo)
 
+        self.audio_monitor_button = QPushButton()
+        self.audio_monitor_button.setText("Анализ звука")
+        self.audio_monitor_button.setMinimumHeight(50)
+        self.audio_monitor_button.setStyleSheet(
+            "QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:checked{border: 4px solid rgb(0, 255, 0);} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+        self.audio_monitor_button.setCheckable(True)
+        self.audio_monitor_button.toggled.connect(self.additional_widget.setVisible)
+
         space_widget_1 = QWidget()
-        self.buttons_layout.addWidget(space_widget_1, 2)
+        self.buttons_layout.addWidget(space_widget_1, 1)
         self.buttons_layout.addWidget(self.disconnect_camera_button, 1)
+        self.buttons_layout.addWidget(self.audio_monitor_button, 1)
         self.buttons_layout.addWidget(self.make_photo_button, 1)
         self.buttons_layout.addWidget(self.choose_camera_button, 1)
 
-        self.main_layout.addLayout(self.buttons_layout, 1)
-        self.setLayout(self.main_layout)
+        self.layout().addLayout(self.buttons_layout, 1)
 
     def choose_camera(self):
         self.choosing_camera_dialog = ChoosingCameraDialog()
