@@ -15,12 +15,14 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{
+	font-size:13pt;
 	color: rgb(67, 252, 252);
 	border: 4px solid rgb(67, 252, 252);
 	border-radius: 15px;
 }
 
 QPushButton:checked{
+	font-size:13pt;
 	color: rgb(67, 252, 252);
 	border: 4px solid rgb(0, 255, 0);
 	border-radius: 15px;
