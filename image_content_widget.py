@@ -1,3 +1,4 @@
+import cv2
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame, QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
@@ -44,9 +45,9 @@ class ImageContentWidget(QWidget):
 
         if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "jpg" and filepath[len(filepath) - 3: len(
                 filepath)] != "png":
-            raise Exception("Error: Selected file is not an image.")
+            raise Exception("Error: Selected file is not a video.")
 
-        image = QPixmap(filepath)
+        image = cv2.imread(filepath)
         self.image_monitor_widget.set_image(image)
 
     def clear_image_monitor(self):
