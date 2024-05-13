@@ -1,8 +1,7 @@
 import cv2
-import sys
 
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QTreeWidget, QTreeWidgetItem
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtCore import pyqtSignal
 
 
 class ChoosingCameraDialog(QDialog):

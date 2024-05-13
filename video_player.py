@@ -1,8 +1,5 @@
-import time
-import sys
-
 from PyQt5.QtCore import QTimer, QElapsedTimer, Qt, pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
 from PyQt5.QtGui import QPixmap, QImage
 
 from video_processing import VideoProcessor
@@ -61,10 +58,9 @@ class VideoPlayer(QWidget):
                 self.video_label.setPixmap(scaled_frame)
 
                 self.elapsed_timer.restart()
-            #else:
-                #self.timer.stop()
-                #self.video_processor.release()
-
+            # else:
+            # self.timer.stop()
+            # self.video_processor.release()
 
     def resizeEvent(self, event):
         if self.camera_enabled and self.last_frame_pixmap is not None:
@@ -85,7 +81,7 @@ class VideoPlayer(QWidget):
         self.video_processor.release()
         self.video_processor = None
 
-        #self.timer.stop()
+        # self.timer.stop()
         self.video_label.clear()
 
     def stop_camera(self):

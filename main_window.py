@@ -1,7 +1,6 @@
 from PyQt5 import uic
-from PyQt5.QtGui import QPixmap, QImage, QIcon
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame
-from PyQt5.QtCore import pyqtSlot, QObject
 
 from image_monitor_widget import ImageMonitorWidget
 from advanced_video_player import AdvancedVideoPlayer

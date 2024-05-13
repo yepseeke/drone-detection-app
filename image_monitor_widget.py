@@ -1,4 +1,4 @@
-from PyQt5 import uic, QtCore
+from PyQt5 import uic
 from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtCore import Qt
 

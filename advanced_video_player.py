@@ -1,9 +1,12 @@
-from video_player import *
-from PyQt5.QtWidgets import QSlider, QHBoxLayout, QPushButton
+from PyQt5.QtWidgets import QSlider, QHBoxLayout, QPushButton, QWidget, QVBoxLayout
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+
+from video_player import VideoPlayer
 
 pause_icon_path = r'images/pauseIcon.svg'
 play_icon_path = r'images/playIcon.svg'
+
 
 class AdvancedVideoPlayer(QWidget):
     def __init__(self):
@@ -26,14 +29,16 @@ class AdvancedVideoPlayer(QWidget):
         self.slider.sliderReleased.connect(self.change_slider_state_to_false)
         self.slider.valueChanged.connect(self.move_to_frame)
         self.video_player.frame_changed_signal.connect(self.change_slider_position)
-        self.slider.setStyleSheet("QSlider::handle:horizontal { background-color: rgb(67, 252, 252); border: 1px solid; height: 40px; width: 40px; margin: -15px 0px; }")
+        self.slider.setStyleSheet(
+            "QSlider::handle:horizontal { background-color: rgb(67, 252, 252); border: 1px solid; height: 40px; width: 40px; margin: -15px 0px; }")
 
         self.pause_resume_button = QPushButton()
         self.pause_resume_button_state = False
         self.pause_resume_button_state_temporary = False
         self.pause_resume_button.setText("")
         self.pause_resume_button.setIcon(QIcon(play_icon_path))
-        self.pause_resume_button.setStyleSheet("QPushButton{ color: rgb(67, 252, 252); } QPushButton:hover{ color: rgb(67, 252, 252); border: 4px solid rgb(67, 252, 252); }")
+        self.pause_resume_button.setStyleSheet(
+            "QPushButton{ color: rgb(67, 252, 252); } QPushButton:hover{ color: rgb(67, 252, 252); border: 4px solid rgb(67, 252, 252); }")
         self.pause_resume_button.clicked.connect(self.change_pause_resume_button_state)
 
         self.slider_pause_layout = QHBoxLayout()
@@ -67,13 +72,13 @@ class AdvancedVideoPlayer(QWidget):
         self.slider_is_pressed = True
         if not self.pause_resume_button_state_temporary:
             self.video_player.resume_camera()
-        #self.stop_player()
+        # self.stop_player()
 
     def change_slider_state_to_false(self):
         self.slider_is_pressed = False
         if not self.pause_resume_button_state_temporary:
             self.video_player.stop_camera()
-        #self.resume_player()
+        # self.resume_player()
 
     def change_slider_position(self, index):
         self.slider.setValue(index)
