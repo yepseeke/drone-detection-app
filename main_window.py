@@ -1,3 +1,6 @@
+import cv2
+
+from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame
@@ -5,6 +8,7 @@ from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, 
 from image_monitor_widget import ImageMonitorWidget
 from advanced_video_player import AdvancedVideoPlayer
 from video_player import VideoPlayer
+from video_processing import ImageProcessor
 from choosing_camera_dialog import ChoosingCameraDialog
 
 main_window_path = r'ui/main_window.ui'
@@ -78,7 +82,8 @@ class MainWindow(QMainWindow):
                 filepath)] != "png":
             raise Exception("Error: Selected file is not an image.")
 
-        image = QPixmap(filepath)
+        image = cv2.imread(filepath)
+
         self.image_monitor_widget.set_image(image)
 
     def upload_video(self):
@@ -86,7 +91,7 @@ class MainWindow(QMainWindow):
                                                "All files (*);; MP4 Files (*.mp4)")[0]
 
         if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "mp4":
-            raise Exception("Error: Selected file is not an video.")
+            raise Exception("Error: Selected file is not a video.")
 
         self.advanced_video_player_widget.set_video(filepath)
 
