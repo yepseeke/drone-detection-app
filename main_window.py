@@ -1,18 +1,28 @@
-import cv2
-
-from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame
+from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame, QWidget
 
+from camera_content_widget import CameraContentWidget
 from image_monitor_widget import ImageMonitorWidget
 from advanced_video_player import AdvancedVideoPlayer
+from info_content_widget import InfoContentWidget
+from settings_content_widget import SettingsContentWidget
+from video_content_widget import VideoContentWidget
 from video_player import VideoPlayer
-from video_processing import ImageProcessor
 from choosing_camera_dialog import ChoosingCameraDialog
+from image_content_widget import ImageContentWidget
+from model import Model
 
-main_window_path = r'ui/main_window.ui'
+main_window_path = r'ui/main_window_styled.ui'
 info_icon_path = r'images/infoIcon.svg'
+menu_button_icon_path = r'images/menuIcon.svg'
+camera_button_icon_path = r'images/cameraIcon.svg'
+video_button_icon_path = r'images/videoIcon.svg'
+image_button_icon_path = r'images/imageIcon.svg'
+settings_button_icon_path = r'images/settingsIcon.svg'
+info_button_icon_path = r'images/infoIcon.svg'
+exit_button_icon_path = r'images/exitIcon.svg'
+home_button_icon_path = r'images/homeIcon.svg'
 
 background_color = (18, 18, 18)
 title_frame_color = (15, 15, 15)
@@ -27,97 +37,81 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("DroneDetectorApp")
         self.setStyleSheet(f"background-color: rgb{background_color};")
 
-        self.title_frame = self.findChild(QFrame, "titleFrame")
-        self.title_frame.setStyleSheet(f"background-color: rgb{title_frame_color};")
+        self.expanded_menu_widget = self.findChild(QWidget, "expandedMenuWidget")
+        self.expanded_menu_widget.setVisible(False)
 
-        self.info_button = self.findChild(QPushButton, "infoButton")
-        self.info_button.clicked.connect(self.show_info)
+        self.menuButton = self.findChild(QPushButton, "menuButton")
+        self.menuButton.setIcon(QIcon(menu_button_icon_path))
+        self.menuIconButton = self.findChild(QPushButton, "menuIconButton")
+        self.menuIconButton.setIcon(QIcon(menu_button_icon_path))
 
-        self.image_layout_1 = self.findChild(QHBoxLayout, "horizontalLayout_4")
-        self.image_monitor_widget = ImageMonitorWidget()
-        self.image_layout_1.addWidget(self.image_monitor_widget, 13)
+        self.homeButton = self.findChild(QPushButton, "homeButton")
+        self.homeButton.setIcon(QIcon(home_button_icon_path))
+        self.homeIconButton = self.findChild(QPushButton, "homeIconButton")
+        self.homeIconButton.setIcon(QIcon(home_button_icon_path))
 
-        self.upload_image_button = self.findChild(QPushButton, "uploadImageButton")
-        self.upload_image_button.clicked.connect(self.upload_image)
+        self.cameraButton = self.findChild(QPushButton, "cameraButton")
+        self.cameraButton.setIcon(QIcon(camera_button_icon_path))
+        self.cameraIconButton = self.findChild(QPushButton, "cameraIconButton")
+        self.cameraIconButton.setIcon(QIcon(camera_button_icon_path))
 
-        self.clear_image_monitor_button = self.findChild(QPushButton, "clearImageMonitorButton")
-        self.clear_image_monitor_button.clicked.connect(self.clear_image_monitor)
+        self.videoButton = self.findChild(QPushButton, "videoButton")
+        self.videoButton.setIcon(QIcon(video_button_icon_path))
+        self.videoIconButton = self.findChild(QPushButton, "videoIconButton")
+        self.videoIconButton.setIcon(QIcon(video_button_icon_path))
 
-        self.camera_layout_1 = self.findChild(QHBoxLayout, "horizontalLayout_2")
-        self.video_player_widget = VideoPlayer()
-        self.camera_layout_1.addWidget(self.video_player_widget, 13)
+        self.imageButton = self.findChild(QPushButton, "imageButton")
+        self.imageButton.setIcon(QIcon(image_button_icon_path))
+        self.imageIconButton = self.findChild(QPushButton, "imageIconButton")
+        self.imageIconButton.setIcon(QIcon(image_button_icon_path))
 
-        self.choose_camera_button = self.findChild(QPushButton, "chooseCameraButton")
-        self.choose_camera_button.clicked.connect(self.choose_camera)
+        self.settingsButton = self.findChild(QPushButton, "settingsButton")
+        self.settingsButton.setIcon(QIcon(settings_button_icon_path))
+        self.settingsIconButton = self.findChild(QPushButton, "settingsIconButton")
+        self.settingsIconButton.setIcon(QIcon(settings_button_icon_path))
 
-        self.disconnect_camera_button = self.findChild(QPushButton, "disconnectCameraButton")
-        self.disconnect_camera_button.clicked.connect(self.disconnect_camera)
+        self.infoButton = self.findChild(QPushButton, "infoButton")
+        self.infoButton.setIcon(QIcon(info_button_icon_path))
+        self.infoIconButton = self.findChild(QPushButton, "infoIconButton")
+        self.infoIconButton.setIcon(QIcon(info_button_icon_path))
 
-        self.make_photo_button = self.findChild(QPushButton, "makePhotoButton")
-        self.make_photo_button.clicked.connect(self.make_photo)
+        self.exitButton = self.findChild(QPushButton, "exitButton")
+        self.exitButton.setIcon(QIcon(exit_button_icon_path))
+        self.exitIconButton = self.findChild(QPushButton, "exitIconButton")
+        self.exitIconButton.setIcon(QIcon(exit_button_icon_path))
+        self.exitButton = self.findChild(QPushButton, "exitButton")
+        self.exitButton.clicked.connect(self.close)
+        self.exitIconButton.clicked.connect(self.close)
 
-        self.info_button = self.findChild(QPushButton, "infoButton")
-        self.info_button.setIcon(QIcon(info_icon_path))
+        self.contentWidget = self.findChild(QWidget, "contentWidget")
 
-        self.video_layout_1 = self.findChild(QHBoxLayout, "horizontalLayout_3")
-        self.advanced_video_player_widget = AdvancedVideoPlayer()
-        self.video_layout_1.addWidget(self.advanced_video_player_widget, 13)
+        self.imageContentWidget = ImageContentWidget()
+        self.contentWidget.layout().addWidget(self.imageContentWidget, 12)
+        self.imageContentWidget.setHidden(True)
+        self.imageButton.toggled.connect(self.imageContentWidget.setVisible)
 
-        self.upload_video_button = self.findChild(QPushButton, "uploadVideoButton")
-        self.upload_video_button.clicked.connect(self.upload_video)
+        self.cameraContentWidget = CameraContentWidget()
+        self.contentWidget.layout().addWidget(self.cameraContentWidget, 12)
+        self.cameraContentWidget.setHidden(True)
+        self.cameraButton.toggled.connect(self.cameraContentWidget.setVisible)
 
-        self.clear_video_monitor_button = self.findChild(QPushButton, "clearVideoMonitorButton")
-        self.clear_video_monitor_button.clicked.connect(self.clear_video_monitor)
+        self.videoContentWidget = VideoContentWidget()
+        self.contentWidget.layout().addWidget(self.videoContentWidget, 12)
+        self.videoContentWidget.setHidden(True)
+        self.videoButton.toggled.connect(self.videoContentWidget.setVisible)
 
-        self.choosing_camera_dialog = None
+        self.homeContentWidget = QWidget()
+        self.contentWidget.layout().addWidget(self.homeContentWidget, 12)
+        self.homeContentWidget.setHidden(True)
+        self.homeButton.toggled.connect(self.homeContentWidget.setVisible)
+        self.homeButton.setChecked(True)
 
-    def show_info(self):
-        pass
+        self.settingsContentWidget = SettingsContentWidget()
+        self.contentWidget.layout().addWidget(self.settingsContentWidget, 12)
+        self.settingsContentWidget.setHidden(True)
+        self.settingsButton.toggled.connect(self.settingsContentWidget.setVisible)
 
-    def upload_image(self):
-        filepath = QFileDialog.getOpenFileName(self, "Provide path to the image", r"/",
-                                               "All files (*);; Jpg Files (*.jpg) ;; PNG Files (*.png);")[0]
-
-        if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "jpg" and filepath[len(filepath) - 3: len(
-                filepath)] != "png":
-            raise Exception("Error: Selected file is not an image.")
-
-        image = cv2.imread(filepath)
-
-        self.image_monitor_widget.set_image(image)
-
-    def upload_video(self):
-        filepath = QFileDialog.getOpenFileName(self, "Provide path to the video", r"/",
-                                               "All files (*);; MP4 Files (*.mp4)")[0]
-
-        if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "mp4":
-            raise Exception("Error: Selected file is not a video.")
-
-        self.advanced_video_player_widget.set_video(filepath)
-
-    def clear_image_monitor(self):
-        self.image_monitor_widget.clear()
-
-    def clear_video_monitor(self):
-        self.advanced_video_player_widget.clear()
-
-    def choose_camera(self):
-        self.choosing_camera_dialog = ChoosingCameraDialog()
-        self.choosing_camera_dialog.choose_signal.connect(self.turn_on_camera)
-        self.choosing_camera_dialog.show()
-        self.choosing_camera_dialog.exec_()
-
-    def turn_on_camera(self):
-        camera_id = self.choosing_camera_dialog.camera_id
-        self.choosing_camera_dialog.close()
-        self.choosing_camera_dialog = None
-        self.video_player_widget.enable_camera(camera_id)
-
-    def disconnect_camera(self):
-        self.video_player_widget.disable_camera()
-
-    def make_photo(self):
-        last_frame_pixmap = self.video_player_widget.last_frame_pixmap
-        filepath, _ = QFileDialog.getSaveFileName(None, "Specify path and title for the image", "", "Image (*.jpg)",
-                                                  options=QFileDialog.DontUseNativeDialog)
-        last_frame_pixmap.save(filepath + ".jpg")
+        self.infoContentWidget = InfoContentWidget()
+        self.contentWidget.layout().addWidget(self.infoContentWidget, 12)
+        self.infoContentWidget.setHidden(True)
+        self.infoButton.toggled.connect(self.infoContentWidget.setVisible)

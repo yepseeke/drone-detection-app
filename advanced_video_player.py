@@ -38,12 +38,12 @@ class AdvancedVideoPlayer(QWidget):
         self.pause_resume_button.setText("")
         self.pause_resume_button.setIcon(QIcon(play_icon_path))
         self.pause_resume_button.setStyleSheet(
-            "QPushButton{ color: rgb(67, 252, 252); } QPushButton:hover{ color: rgb(67, 252, 252); border: 4px solid rgb(67, 252, 252); }")
+            "QPushButton{ color: rgb(67, 252, 252); border: 2px solid rgb(10,10,10); border-radius: 10px;} QPushButton:hover{ color: rgb(67, 252, 252); border: 2px solid rgb(67, 252, 252); border-radius: 10px;}")
         self.pause_resume_button.clicked.connect(self.change_pause_resume_button_state)
 
         self.slider_pause_layout = QHBoxLayout()
-        self.slider_pause_layout.addWidget(self.slider, 9)
         self.slider_pause_layout.addWidget(self.pause_resume_button, 1)
+        self.slider_pause_layout.addWidget(self.slider, 9)
         self.layout.addLayout(self.slider_pause_layout, 1)
 
     def set_video(self, video_path):
