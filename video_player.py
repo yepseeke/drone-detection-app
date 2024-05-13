@@ -1,8 +1,5 @@
-import time
-import sys
-
-from PyQt5.QtCore import QTimer, QElapsedTimer, Qt
-from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtCore import QTimer, QElapsedTimer, Qt, pyqtSignal
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
 from PyQt5.QtGui import QPixmap, QImage
 
 from video_processing import VideoProcessor
@@ -11,6 +8,8 @@ background_color = (0, 0, 0)
 
 
 class VideoPlayer(QWidget):
+    frame_changed_signal = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
 
@@ -37,16 +36,17 @@ class VideoPlayer(QWidget):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start()
 
-    def update_frame(self):
+    def update_frame(self, force_update=False):
         if not self.camera_enabled:
             return
 
         current_time = self.elapsed_timer.elapsed()
 
-        if current_time >= self.frame_interval:
+        if current_time >= self.frame_interval or force_update:
             success, frame = self.video_processor.get_annotated_frame()
 
             if success:
+                self.frame_changed_signal.emit(self.video_processor.current_frame_index)
                 height, width, channel = frame.shape
                 bytes_per_line = channel * width
 
@@ -58,9 +58,9 @@ class VideoPlayer(QWidget):
                 self.video_label.setPixmap(scaled_frame)
 
                 self.elapsed_timer.restart()
-            else:
-                self.timer.stop()
-                self.video_processor.release()
+            # else:
+            # self.timer.stop()
+            # self.video_processor.release()
 
     def resizeEvent(self, event):
         if self.camera_enabled and self.last_frame_pixmap is not None:
@@ -81,5 +81,17 @@ class VideoPlayer(QWidget):
         self.video_processor.release()
         self.video_processor = None
 
-        #self.timer.stop()
+        # self.timer.stop()
         self.video_label.clear()
+
+    def stop_camera(self):
+        self.camera_enabled = False
+
+    def resume_camera(self):
+        self.camera_enabled = True
+
+    def total_frames(self):
+        return self.video_processor.total_frames
+
+    def move_to_frame(self, index):
+        self.video_processor.set_frame_index(index)
