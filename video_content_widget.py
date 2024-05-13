@@ -30,10 +30,10 @@ class VideoContentWidget(QWidget):
         self.clear_monitor_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
         self.clear_monitor_button.clicked.connect(self.clear_video_monitor)
 
-        self.buttons_layout.addWidget(self.upload_video_button, 1)
-        self.buttons_layout.addWidget(self.clear_monitor_button, 1)
         space_widget_1 = QWidget()
         self.buttons_layout.addWidget(space_widget_1, 3)
+        self.buttons_layout.addWidget(self.clear_monitor_button, 1)
+        self.buttons_layout.addWidget(self.upload_video_button, 1)
 
         self.main_layout.addLayout(self.buttons_layout, 1)
         self.setLayout(self.main_layout)

@@ -40,11 +40,11 @@ class CameraContentWidget(QWidget):
         self.make_photo_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
         self.make_photo_button.clicked.connect(self.make_photo)
 
-        self.buttons_layout.addWidget(self.choose_camera_button, 1)
-        self.buttons_layout.addWidget(self.disconnect_camera_button, 1)
-        self.buttons_layout.addWidget(self.make_photo_button, 1)
         space_widget_1 = QWidget()
         self.buttons_layout.addWidget(space_widget_1, 2)
+        self.buttons_layout.addWidget(self.disconnect_camera_button, 1)
+        self.buttons_layout.addWidget(self.make_photo_button, 1)
+        self.buttons_layout.addWidget(self.choose_camera_button, 1)
 
         self.main_layout.addLayout(self.buttons_layout, 1)
         self.setLayout(self.main_layout)

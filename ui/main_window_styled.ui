@@ -258,6 +258,7 @@ QWidget{
 	color: rgb(67, 252, 252);
 	border:none;
 	font-size: 18pt;
+	text-align:left;
 }
 
 QPushButton:checked{
@@ -556,7 +557,6 @@ font-size: 20pt;</string>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections>
