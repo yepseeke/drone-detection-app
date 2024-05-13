@@ -1,24 +1,18 @@
 import cv2
-import torch
 
-from model import Model
+from image_processing import ImageProcessor
 
 
 def to_rgb(frame):
     return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
 
-class VideoProcessor:
+class VideoProcessor(ImageProcessor):
     def __init__(self, source):
+        super().__init__()
+
         self.video_capture = cv2.VideoCapture(source)
-        self.model = Model()
         self.current_frame_index = 0
-
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        if torch.cuda.is_available():
-            torch.cuda.set_device(0)
-
-        self.model.to(device=device)
 
     def get_frame(self, color_model='RGB'):
         success, frame = self.video_capture.read()
@@ -28,12 +22,6 @@ class VideoProcessor:
                 return success, frame
             return success, to_rgb(frame)
         return success, frame
-
-    # function returns annotated frame
-    def find_objects(self, frame):
-        result = self.model.track(frame)
-        annotated_frame = result[0].plot()
-        return annotated_frame
 
     def get_annotated_frame(self, color_model='RGB'):
         success, frame = self.get_frame(color_model)

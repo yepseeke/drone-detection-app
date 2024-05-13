@@ -47,20 +47,18 @@ class VideoPlayer(QWidget):
 
             if success:
                 self.frame_changed_signal.emit(self.video_processor.current_frame_index)
-                height, width, channel = frame.shape
-                bytes_per_line = channel * width
 
-                q_image = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+                q_image = self.video_processor.get_QImage(frame)
                 self.last_frame_pixmap = QPixmap.fromImage(q_image)
+
                 scaled_frame = self.last_frame_pixmap.scaled(self.video_label.width(), self.video_label.height(),
                                                              Qt.KeepAspectRatio)
-
                 self.video_label.setPixmap(scaled_frame)
 
                 self.elapsed_timer.restart()
-            # else:
-            # self.timer.stop()
-            # self.video_processor.release()
+            else:
+                self.timer.stop()
+                self.video_processor.release()
 
     def resizeEvent(self, event):
         if self.camera_enabled and self.last_frame_pixmap is not None:

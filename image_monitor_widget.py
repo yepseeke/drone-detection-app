@@ -1,6 +1,9 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
+
+from video_processing import ImageProcessor
 
 image_monitor_widget_path = r'ui/image_monitor_widget.ui'
 
@@ -16,15 +19,20 @@ class ImageMonitorWidget(QWidget):
         self.label.setAlignment(Qt.AlignCenter)
         self.setStyleSheet("background-color: rgb(0, 0, 0);")
 
+        self.image_processor = ImageProcessor()
+
         self.image_loaded = False
         self.image = None
 
-    def set_image(self, loaded_image):
+    def set_image(self, image):
         self.image_loaded = True
 
-        self.image = loaded_image
-        scaled_image = self.image.scaled(self.label.width(), self.label.height(), Qt.KeepAspectRatio)
-        self.label.setPixmap(scaled_image)
+        annotated_image = self.image_processor.find_objects(image)
+        q_image = self.image_processor.get_QImage(annotated_image)
+        image_pixmap = QPixmap.fromImage(q_image)
+        scaled_image_pixmap = image_pixmap.scaled(self.label.width(), self.label.height(), Qt.KeepAspectRatio)
+
+        self.label.setPixmap(scaled_image_pixmap)
 
     def resizeEvent(self, event):
         if not self.image_loaded:
