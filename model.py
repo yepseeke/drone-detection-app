@@ -2,7 +2,6 @@ from ultralytics import YOLO
 
 selected_model_path = r'models/light.pt'
 
-
 def singleton(class_):
     instances = {}
 

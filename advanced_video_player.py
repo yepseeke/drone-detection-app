@@ -42,8 +42,8 @@ class AdvancedVideoPlayer(QWidget):
         self.pause_resume_button.clicked.connect(self.change_pause_resume_button_state)
 
         self.slider_pause_layout = QHBoxLayout()
-        self.slider_pause_layout.addWidget(self.slider, 9)
         self.slider_pause_layout.addWidget(self.pause_resume_button, 1)
+        self.slider_pause_layout.addWidget(self.slider, 9)
         self.layout.addLayout(self.slider_pause_layout, 1)
 
     def set_video(self, video_path):

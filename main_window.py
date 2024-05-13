@@ -11,6 +11,7 @@ from video_content_widget import VideoContentWidget
 from video_player import VideoPlayer
 from choosing_camera_dialog import ChoosingCameraDialog
 from image_content_widget import ImageContentWidget
+from model import Model
 
 main_window_path = r'ui/main_window_styled.ui'
 info_icon_path = r'images/infoIcon.svg'
@@ -35,9 +36,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("DroneDetectorApp")
         self.setStyleSheet(f"background-color: rgb{background_color};")
-
-        #self.title_frame = self.findChild(QFrame, "titleFrame")
-        #self.title_frame.setStyleSheet(f"background-color: rgb{title_frame_color};")
 
         self.expanded_menu_widget = self.findChild(QWidget, "expandedMenuWidget")
         self.expanded_menu_widget.setVisible(False)
