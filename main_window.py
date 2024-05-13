@@ -44,6 +44,8 @@ class MainWindow(QMainWindow):
 
         self.menuButton = self.findChild(QPushButton, "menuButton")
         self.menuButton.setIcon(QIcon(menu_button_icon_path))
+        self.menuIconButton = self.findChild(QPushButton, "menuIconButton")
+        self.menuIconButton.setIcon(QIcon(menu_button_icon_path))
 
         self.homeButton = self.findChild(QPushButton, "homeButton")
         self.homeButton.setIcon(QIcon(home_button_icon_path))
