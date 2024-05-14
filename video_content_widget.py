@@ -2,6 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame, QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 from advanced_video_player import AdvancedVideoPlayer
+from plot_widget import MyApp
 
 background_color = (19, 19, 19)
 cyan_color = (67, 252, 252)
@@ -16,11 +17,11 @@ class VideoContentWidget(QWidget):
         self.main_widget.setLayout(QHBoxLayout())
         self.advanced_video_player = AdvancedVideoPlayer()
         # place for fft widget
-        self.additional_widget = QWidget()
+        self.signal_player = QWidget()
         self.main_widget.layout().addWidget(self.advanced_video_player, 3)
-        self.main_widget.layout().addWidget(self.additional_widget, 2)
+        self.main_widget.layout().addWidget(self.signal_player, 2)
         self.main_widget.layout().setContentsMargins(0, 0, 0, 0)
-        self.additional_widget.setVisible(False)
+        self.signal_player.setVisible(False)
 
         self.buttons_layout = QHBoxLayout()
 
@@ -46,7 +47,7 @@ class VideoContentWidget(QWidget):
         self.audio_monitor_button.setStyleSheet(
             "QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:checked{border: 4px solid rgb(0, 255, 0);} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
         self.audio_monitor_button.setCheckable(True)
-        self.audio_monitor_button.toggled.connect(self.additional_widget.setVisible)
+        self.audio_monitor_button.toggled.connect(self.signal_player.setVisible)
 
         space_widget_1 = QWidget()
         self.buttons_layout.addWidget(space_widget_1, 2)
@@ -63,9 +64,29 @@ class VideoContentWidget(QWidget):
         if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "mp4":
             raise Exception("Error: Selected file is not an video.")
 
+        flag = self.signal_player.isVisible()
+        self.audio_monitor_button.toggled.disconnect(self.signal_player.setVisible)
+        #self.signal_player.setVisible(False)
+        self.signal_player.close()
+        self.signal_player = MyApp(filepath)
+        self.main_widget.layout().addWidget(self.signal_player, 2)
+        self.signal_player.setVisible(flag)
+        self.audio_monitor_button.toggled.connect(self.signal_player.setVisible)
+
         self.advanced_video_player.set_video(filepath)
+        self.advanced_video_player.video_player.frame_changed_signal.connect(self.signal_player.update_plot)
 
     def clear_video_monitor(self):
         self.advanced_video_player.clear()
+
+        flag = self.signal_player.isVisible()
+        self.advanced_video_player.video_player.frame_changed_signal.disconnect(self.signal_player.update_plot)
+        self.audio_monitor_button.toggled.disconnect(self.signal_player.setVisible)
+        #self.signal_player.setVisible(False)
+        self.signal_player.close()
+        self.signal_player = QWidget()
+        self.main_widget.layout().addWidget(self.signal_player, 2)
+        self.signal_player.setVisible(flag)
+        self.audio_monitor_button.toggled.connect(self.signal_player.setVisible)
 
 

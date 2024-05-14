@@ -59,9 +59,9 @@ class CameraContentWidget(QWidget):
         self.audio_monitor_button.toggled.connect(self.additional_widget.setVisible)
 
         space_widget_1 = QWidget()
-        self.buttons_layout.addWidget(space_widget_1, 1)
+        self.buttons_layout.addWidget(space_widget_1, 2)
         self.buttons_layout.addWidget(self.disconnect_camera_button, 1)
-        self.buttons_layout.addWidget(self.audio_monitor_button, 1)
+        #self.buttons_layout.addWidget(self.audio_monitor_button, 1)
         self.buttons_layout.addWidget(self.make_photo_button, 1)
         self.buttons_layout.addWidget(self.choose_camera_button, 1)
 
