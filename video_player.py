@@ -59,7 +59,7 @@ class VideoPlayer(QWidget):
 
     def resizeEvent(self, event):
         if self.camera_enabled and self.last_frame_pixmap is not None:
-            scaled_frame = self.lastFramePixmap.scaled(self.video_label.width(), self.video_label.height(),
+            scaled_frame = self.last_frame_pixmap.scaled(self.video_label.width(), self.video_label.height(),
                                                        Qt.KeepAspectRatio)
             self.video_label.setPixmap(scaled_frame)
         QWidget.resizeEvent(self, event)
