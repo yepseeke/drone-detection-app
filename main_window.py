@@ -101,11 +101,7 @@ class MainWindow(QMainWindow):
         self.videoContentWidget.setHidden(True)
         self.videoButton.toggled.connect(self.videoContentWidget.setVisible)
 
-<<<<<<< HEAD
-        self.homeContentWidget = QWidget()
-=======
         self.homeContentWidget = HomeContentWidget()
->>>>>>> developMiraliBranch
         self.contentWidget.layout().addWidget(self.homeContentWidget, 12)
         self.homeContentWidget.setHidden(True)
         self.homeButton.toggled.connect(self.homeContentWidget.setVisible)
