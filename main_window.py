@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QPushButton, QFileDialog, QFrame, QWidget
 
 from camera_content_widget import CameraContentWidget
+from home_content_widget import HomeContentWidget
 from image_monitor_widget import ImageMonitorWidget
 from advanced_video_player import AdvancedVideoPlayer
 from info_content_widget import InfoContentWidget
@@ -100,7 +101,11 @@ class MainWindow(QMainWindow):
         self.videoContentWidget.setHidden(True)
         self.videoButton.toggled.connect(self.videoContentWidget.setVisible)
 
+<<<<<<< HEAD
         self.homeContentWidget = QWidget()
+=======
+        self.homeContentWidget = HomeContentWidget()
+>>>>>>> developMiraliBranch
         self.contentWidget.layout().addWidget(self.homeContentWidget, 12)
         self.homeContentWidget.setHidden(True)
         self.homeButton.toggled.connect(self.homeContentWidget.setVisible)

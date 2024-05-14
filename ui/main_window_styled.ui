@@ -596,7 +596,11 @@ QWidget{
      <widget class="QWidget" name="contentWidget" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0">
        <item>
+<<<<<<< HEAD
         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="8">
+=======
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
+>>>>>>> developMiraliBranch
          <item>
           <widget class="QLabel" name="label">
            <property name="styleSheet">
@@ -604,7 +608,11 @@ QWidget{
 font-size: 20pt;</string>
            </property>
            <property name="text">
+<<<<<<< HEAD
             <string>Детектор беспилотников</string>
+=======
+            <string>ЯсноеНебо</string>
+>>>>>>> developMiraliBranch
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
