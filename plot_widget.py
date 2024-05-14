@@ -53,6 +53,7 @@ class SignalPlot(WidgetPlot):
         self.values = data[:self.window_size]
 
     def update_plot(self):
+        self.plot_graph.setYRange(-1, 1)
         self.line.setData(self.time, self.values)
 
 
@@ -63,29 +64,30 @@ class FFTPlot(WidgetPlot):
 
         self.audio_processor = audio_processor
         self.interval = interval
+        self.plot_type = plot_type
 
         sample_rate = self.audio_processor.sample_rate
 
         # Creating array of frequencies
-        print(sample_rate)
         self.freqs = np.linspace(0, sample_rate // 2, interval // 2)
 
         # Defining zero values for the amplitude spectrum
         self.values = np.zeros(interval // 2)
 
-        if plot_type == 'log':
-            self.plot_graph.setYRange(-180, 60)
-            self.plot_graph.setLogMode(x=True)
-
         # Plot data
         self.line = self.plot_graph.plot(self.freqs, self.values, pen=self.pen)
 
     def update_values(self, time_start, time_end):
-        self.freqs = self.audio_processor.get_fft_data()[:self.interval]
+        self.values = self.audio_processor.get_fft_data()[:self.interval]
+        print(self.values)
 
     def update_plot(self):
-        self.plot_graph.setYRange(-10, 20)
         self.line.setData(self.freqs, self.values)
+        if self.plot_type == 'log':
+            self.plot_graph.setYRange(-50, 70)
+            self.plot_graph.setLogMode(x=True)
+        else:
+            self.plot_graph.setYRange(-30, 40)
 
 
 class MyApp(QMainWindow):

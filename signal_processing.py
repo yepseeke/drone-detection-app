@@ -51,13 +51,13 @@ class SignalProcessorFromVideoFile(SignalProcessor):
 
         self.video_source = video_source
         self.video = mp.VideoFileClip(self.video_source)
+        self.sample_rate = self.video.audio.fps
 
         self.duration = 0
 
     def read_signal(self, start_time, end_time):
         try:
             audio = self.video.audio
-            self.sample_rate = audio.fps
             self.duration = self.video.duration
 
             if start_time < 0 or start_time > self.duration:
@@ -67,7 +67,7 @@ class SignalProcessorFromVideoFile(SignalProcessor):
             self.audio_data = np.mean(self.audio_data, axis=1)
 
             interval = (end_time - start_time) * self.sample_rate
-            self.fft_signal(interval)
+            self.fft_signal(int(interval))
 
         except Exception as error:
             print('Error extracting audio from video:', error)
