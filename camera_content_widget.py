@@ -35,26 +35,26 @@ class CameraContentWidget(QWidget):
         self.choose_camera_button = QPushButton()
         self.choose_camera_button.setText("Выбрать камеру")
         self.choose_camera_button.setMinimumHeight(50)
-        self.choose_camera_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+        self.choose_camera_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);border: rgb(0,255,0);}")
         self.choose_camera_button.clicked.connect(self.choose_camera)
 
         self.disconnect_camera_button = QPushButton()
         self.disconnect_camera_button.setText("Отключить камеру")
         self.disconnect_camera_button.setMinimumHeight(50)
-        self.disconnect_camera_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+        self.disconnect_camera_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);border: rgb(0,255,0);}")
         self.disconnect_camera_button.clicked.connect(self.disconnect_camera)
 
         self.make_photo_button = QPushButton()
         self.make_photo_button.setText("Сделать снимок")
         self.make_photo_button.setMinimumHeight(50)
-        self.make_photo_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+        self.make_photo_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);border: rgb(0,255,0);}")
         self.make_photo_button.clicked.connect(self.make_photo)
 
         self.audio_monitor_button = QPushButton()
         self.audio_monitor_button.setText("Анализ звука")
         self.audio_monitor_button.setMinimumHeight(50)
         self.audio_monitor_button.setStyleSheet(
-            "QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:checked{border: 4px solid rgb(0, 255, 0);} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+            "QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:checked{border: 4px solid rgb(0, 255, 0);} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);border: rgb(0,255,0);}")
         self.audio_monitor_button.setCheckable(True)
         self.audio_monitor_button.toggled.connect(self.additional_widget.setVisible)
 

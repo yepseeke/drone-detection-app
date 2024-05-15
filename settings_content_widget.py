@@ -29,6 +29,9 @@ class SettingsContentWidget(QWidget):
         self.model_button_3 = self.findChild(QPushButton, "modelButton3")
         self.model_button_3.toggled.connect(self.setThirdModel)
 
+        self.widget2 = self.findChild(QWidget, "widget_2")
+        self.widget2.setVisible(False)
+
 
     def setFirstModel(self, flag):
         if flag:

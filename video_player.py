@@ -70,6 +70,8 @@ class VideoPlayer(QWidget):
         self.camera_enabled = True
 
     def disable_camera(self):
+        if self.video_processor is None:
+            return
         self.camera_enabled = False
         self.last_frame_pixmap = None
 

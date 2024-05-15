@@ -22,13 +22,13 @@ class ImageContentWidget(QWidget):
         self.upload_image_button = QPushButton()
         self.upload_image_button.setText("Загрузить картинку")
         self.upload_image_button.setMinimumHeight(50)
-        self.upload_image_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+        self.upload_image_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);border: rgb(0,255,0);}")
         self.upload_image_button.clicked.connect(self.upload_image)
 
         self.clear_monitor_button = QPushButton()
         self.clear_monitor_button.setText("Очистить монитор")
         self.clear_monitor_button.setMinimumHeight(50)
-        self.clear_monitor_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0);}")
+        self.clear_monitor_button.setStyleSheet("QPushButton{color: rgb(67, 252, 252);border: 4px solid rgb(67, 252, 252);border-radius: 10px;font-size: 12pt;} QPushButton:hover{background-color:rgb(0,255,0); color: rgb(0, 0, 0); border: rgb(0,255,0);}")
         self.clear_monitor_button.clicked.connect(self.clear_image_monitor)
 
         space_widget_1 = QWidget()
@@ -40,15 +40,18 @@ class ImageContentWidget(QWidget):
         self.setLayout(self.main_layout)
 
     def upload_image(self):
-        filepath = QFileDialog.getOpenFileName(self, "Provide path to the image", r"/",
-                                               "All files (*);; Jpg Files (*.jpg) ;; PNG Files (*.png);")[0]
+        try:
+            filepath = QFileDialog.getOpenFileName(self, "Provide path to the image", r"/",
+                                                   "All files (*);; Jpg Files (*.jpg) ;; PNG Files (*.png);")[0]
 
-        if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "jpg" and filepath[len(filepath) - 3: len(
-                filepath)] != "png":
-            raise Exception("Error: Selected file is not a video.")
+            if len(filepath) < 3 or filepath[len(filepath) - 3: len(filepath)] != "jpg" and filepath[len(filepath) - 3: len(
+                    filepath)] != "png":
+                raise Exception("Error: Selected file is not an image.")
 
-        image = cv2.imread(filepath)
-        self.image_monitor_widget.set_image(image)
+            image = cv2.imread(filepath)
+            self.image_monitor_widget.set_image(image)
+        except Exception as error:
+            print("Error while uploading image: ", error)
 
     def clear_image_monitor(self):
         self.image_monitor_widget.clear()
