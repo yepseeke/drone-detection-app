@@ -24,6 +24,19 @@ class VideoProcessor(ImageProcessor):
         return success, frame
 
     def get_annotated_frame(self, color_model='RGB'):
+        """
+        Retrieves an image frame and annotates it using a pre-trained model.
+
+        Parameters:
+        - color_model (str): The color model to use for capturing the frame.
+          Default is 'RGB'.
+
+        Returns:
+        - tuple: A tuple containing:
+          - success (bool): A boolean indicating if the frame was successfully retrieved.
+          - annotated_frame (numpy.ndarray): The annotated image frame if `success` is True.
+            If `success` is False, returns the original frame without annotations.
+        """
         success, frame = self.get_frame(color_model)
         if success:
             annotated_frame = self.find_objects(frame)
